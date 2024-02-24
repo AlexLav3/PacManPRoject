@@ -18,8 +18,15 @@ APPacMan::APPacMan()
 
 	PrimaryActorTick.bCanEverTick = true;
 
+	GetCharacterMovement()->MaxWalkSpeed = 500.f;
+	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
+
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+
 	SpringArmComp = CreateDefaultSubobject <USpringArmComponent>("SpringArmComp");
-	SpringArmComp->bUsePawnControlRotation = true;
+	SpringArmComp->bUsePawnControlRotation = false;
 	SpringArmComp->SetupAttachment(RootComponent);
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
@@ -27,10 +34,6 @@ APPacMan::APPacMan()
 
 	CameraComp = CreateDefaultSubobject <UCameraComponent>("CameraComp");
 	CameraComp->SetupAttachment(SpringArmComp);
-
-	bUseControllerRotationYaw = false;
-
-	GetCharacterMovement()->bOrientRotationToMovement = false;
 
 }
 
@@ -61,22 +64,48 @@ void APPacMan::Tick(float DeltaTime)
 void APPacMan::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APPacMan::Move);
+	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
 
-	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APPacMan::Look);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APPacMan::Move);
+
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APPacMan::Look);
+
+	}
 
 }
 
-void APPacMan::Move(float value)
+void APPacMan::Move(const FInputActionValue& Value)
 {
-	FRotator ControlRot = GetControlRotation();
-	ControlRot.Pitch = 0.0f;
-	ControlRot.Roll = 0.0f;
+	//  Vector2D
+	FVector2D MovementVector = Value.Get<FVector2D>();
 
-	AddMovementInput(ControlRot.Vector(), value);
+	if (Controller != nullptr)
+	{
+		// find out which way is forward
+		const FRotator Rotation = Controller->GetControlRotation();
+		const FRotator YawRotation(0, Rotation.Yaw, 0);
+
+		// get forward vector
+		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+
+		// get right vector 
+		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+		// add movement 
+		AddMovementInput(ForwardDirection, MovementVector.Y);
+		AddMovementInput(RightDirection, MovementVector.X);
+	}
+
 }
 
-void APPacMan::Look( float value)
+void APPacMan::Look(const FInputActionValue& Value)
 {
+	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
+	if (Controller != nullptr)
+	{
+		//  yaw and pitch input 
+		AddControllerYawInput(LookAxisVector.X);
+		AddControllerPitchInput(LookAxisVector.Y);
+	}
 }

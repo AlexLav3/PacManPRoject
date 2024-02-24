@@ -15,6 +15,8 @@ class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 
+struct FInputActionValue; 
+
 UCLASS()
 class PACMAN_API APPacMan : public ACharacter
 {
@@ -50,9 +52,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* Pause;
 
-	void Move(float value);
+	void Move(const FInputActionValue& Value);
 
-	void Look(float value);
+	void Look(const FInputActionValue& Value);
 
 public:	
 	// Called every frame
