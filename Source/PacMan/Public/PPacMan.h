@@ -6,6 +6,12 @@
 #include "GameFramework/Character.h"
 #include "PPacMan.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
+class UInputMappingContext;
+class UInputAction;
+struct FInputActionValue;
+
 UCLASS()
 class PACMAN_API APPacMan : public ACharacter
 {

@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "PPacMan.h"
+#include "EnhancedInputComponent.h"
 
 // Sets default values
 APPacMan::APPacMan()
