@@ -30,7 +30,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void GetsEaten(bool *bIsEaten); 
+	//void GetsEaten(bool bIsEaten); 
 
-	int HighScore; 
+	UFUNCTION()
+	void OnFruitHit(class UPrimitiveComponent* HitComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+
+
 };

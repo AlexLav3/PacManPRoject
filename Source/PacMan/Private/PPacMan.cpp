@@ -9,6 +9,7 @@
 #include "GameFramework/Controller.h"
 #include "C:/Program Files/Epic Games/UE_5.3/Engine/Plugins/EnhancedInput/Source/EnhancedInput/Public/InputTriggers.h"
 #include "EnhancedInputComponent.h"
+#include "PFruits.h"
 #include "EnhancedInputSubsystems.h"
 
 // Sets default values
@@ -22,18 +23,20 @@ APPacMan::APPacMan()
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 
 	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = false;
-	bUseControllerRotationRoll = false;
+	bUseControllerRotationYaw = true;
+	bUseControllerRotationRoll = true;
 
 	SpringArmComp = CreateDefaultSubobject <USpringArmComponent>("SpringArmComp");
 	SpringArmComp->bUsePawnControlRotation = false;
 	SpringArmComp->SetupAttachment(RootComponent);
 
-	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->bOrientRotationToMovement = false;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f);
 
 	CameraComp = CreateDefaultSubobject <UCameraComponent>("CameraComp");
 	CameraComp->SetupAttachment(SpringArmComp);
+
+	HighScore = 0;
 
 }
 
