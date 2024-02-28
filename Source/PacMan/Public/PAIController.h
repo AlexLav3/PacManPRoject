@@ -43,7 +43,7 @@ protected:
 	FTimerHandle ScatterChaseTimerHandle;
 
 	// Declare Scatter and Chase durations
-	float ScatterDuration = 10.0f;
-	float ChaseDuration = 7.0f;
+	float ScatterDuration = 20.0f;
+	float ChaseDuration = 10.0f;
     
 };

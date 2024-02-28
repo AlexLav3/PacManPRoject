@@ -25,7 +25,7 @@ void APAIController::UpdatePinkGhostTargetLocation()
     APawn* MyPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 
     FVector PlayerLocation = MyPawn->GetActorLocation();
-    float OffsetDistance = 80.0f;
+    float OffsetDistance = 30.0f;
 
     // Calculate the target location to the left of the player
     FVector PinkGhostTargetLocation = PlayerLocation - MyPawn->GetActorRightVector() * OffsetDistance;
@@ -40,7 +40,7 @@ void APAIController::UpdateInkyTargetLocation()
     {
         APawn* MyPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 
-        float OffsetDistance = 80.0f;
+        float OffsetDistance = 30.0f;
 
         FVector PlayerLocation = MyPawn->GetActorLocation();
         // Calculate the target location to the left of the player
@@ -80,7 +80,7 @@ void APAIController::UpdateOrangeGhostTargetLocation()
         float DistanceToPlayer = FVector::Distance(OrangeGhostLocation, PlayerLocation);
 
         // Define the threshold distance for switching to scatter mode
-        float ScatterThreshold = 80.0f; // Adjust as needed
+        float ScatterThreshold = 30.0f; // Adjust as needed
 
         // Check if the Orange Ghost is within the scatter threshold
         if (DistanceToPlayer <= ScatterThreshold)
