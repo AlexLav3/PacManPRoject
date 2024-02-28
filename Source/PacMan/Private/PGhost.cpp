@@ -24,3 +24,21 @@ void APGhost::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+
+void APGhost::OnGhostHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
+{
+    APPacMan* PacMan = Cast<APPacMan>(OtherActor);
+    if (PacMan)
+    {
+        if (PacMan->bHasConsumedPowerPellet)
+        {
+            Destroy(); // Destroy the ghost if Pac-Man has consumed a power pellet
+        }
+        else
+        {
+           
+            UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, true);
+        }
+    }
+
+}

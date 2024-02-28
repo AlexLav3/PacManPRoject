@@ -32,19 +32,6 @@ void APFruits::Tick(float DeltaTime)
 
 }
 
-//oid APFruits::GetsEaten(bool bIsEaten)
-//{
-//	if (bIsEaten) {
-	//	bHasBeenEaten = true;
-
-	//	if (APPacMan* PacMan = Cast<APPacMan>(GetWorld()->GetFirstPlayerController()->GetPawn()))
-	//	{
-//PacMan->HighScore++;
-	//	}
-	//	Destroy();
-	//}
-//}
-
 void APFruits::OnFruitHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (OtherActor && OtherActor != this && OtherComponent)

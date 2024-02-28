@@ -4,7 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include <PPacMan.h>
+#include "Kismet/KismetSystemLibrary.h"
+#include <Kismet/GameplayStatics.h>
 #include "PGhost.generated.h"
+
 
 UCLASS()
 class PACMAN_API APGhost : public ACharacter
@@ -23,5 +27,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION()
+	void OnGhostHit(class UPrimitiveComponent* HitComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 
 };

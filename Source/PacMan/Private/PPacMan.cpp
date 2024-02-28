@@ -37,6 +37,7 @@ APPacMan::APPacMan()
 	CameraComp->SetupAttachment(SpringArmComp);
 
 	HighScore = 0;
+	bHasConsumedPowerPellet = false; 
 
 }
 
@@ -112,3 +113,4 @@ void APPacMan::Look(const FInputActionValue& Value)
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
 }
+ 

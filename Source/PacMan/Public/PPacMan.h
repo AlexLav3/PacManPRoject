@@ -65,4 +65,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Score")
 	int HighScore;
+
+	UPROPERTY (EditDefaultsOnly, BlueprintReadOnly, Category = "Pellet")
+	bool bHasConsumedPowerPellet; 
 };
