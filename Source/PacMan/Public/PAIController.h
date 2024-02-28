@@ -37,6 +37,7 @@ protected:
 
 	void ToggleScatterChaseMode();
 	void Update(); 
+
 	bool bScatterMode; 
 
 	FTimerHandle ScatterChaseTimerHandle;

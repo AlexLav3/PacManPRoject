@@ -11,7 +11,7 @@ void APAIController::BeginPlay()
 	Super::BeginPlay(); 
 
 	RunBehaviorTree(BehaviourTree); 
-    bScatterMode = false; 
+    bScatterMode = true; 
     ToggleScatterChaseMode(); 
 }
 
@@ -43,7 +43,7 @@ void APAIController::UpdatePinkGhostTargetLocation()
 
 void APAIController::UpdateInkyTargetLocation()
 {
-    if (!bScatterMode) {
+    if (bScatterMode) {
         APawn* MyPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 
         float OffsetDistance = 80.0f;
@@ -63,7 +63,7 @@ void APAIController::UpdateInkyTargetLocation()
 
 void APAIController::UpdataRedTargetLocation()
 { 
-    if (!bScatterMode) {
+    if (bScatterMode) {
         APawn* MyPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 
         //GetBlackboardComponent() ->SetValueAsVector("MoveToTarget", MyPawn->GetActorLocation());
@@ -75,7 +75,7 @@ void APAIController::UpdataRedTargetLocation()
 
 void APAIController::UpdateOrangeGhostTargetLocation() {
 
-    if (!bScatterMode) {
+    if (bScatterMode) {
         APawn* MyPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 
         FVector PlayerLocation = MyPawn->GetActorLocation();
