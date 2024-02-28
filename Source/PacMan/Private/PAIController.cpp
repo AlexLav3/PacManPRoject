@@ -1,54 +1,48 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "PAIController.h"
 #include <Kismet/GameplayStatics.h>
-#include "BehaviorTree\BlackboardComponent.h"
-
+#include "BehaviorTree/BlackboardComponent.h"
 
 void APAIController::BeginPlay()
 {
-	Super::BeginPlay(); 
+    Super::BeginPlay();
 
-	RunBehaviorTree(BehaviourTree); 
-    bScatterMode = false; 
-    ToggleScatterChaseMode(); 
+    RunBehaviorTree(BehaviourTree);
+    bScatterMode = false;
+    ToggleScatterChaseMode();
 }
 
 void APAIController::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
-    
-    Update(); 
+
+    Update();
 }
 
 void APAIController::UpdatePinkGhostTargetLocation()
 {
     APawn* MyPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 
-    
-        FVector PlayerLocation = MyPawn->GetActorLocation();
+    FVector PlayerLocation = MyPawn->GetActorLocation();
+    float OffsetDistance = 80.0f;
 
-        // Define the offset distance to the left 
-        float OffsetDistance = 80.0f;
+    // Calculate the target location to the left of the player
+    FVector PinkGhostTargetLocation = PlayerLocation - MyPawn->GetActorRightVector() * OffsetDistance;
 
-        // Calculate the target location to the left of the player
-        FVector PinkGhostTargetLocation = PlayerLocation - MyPawn->GetActorRightVector() * OffsetDistance;
-
-        // Set the Pink Ghost's target location
-        GetBlackboardComponent()->SetValueAsVector("PinkGhostTarget", PinkGhostTargetLocation);
-   
-
+    // Set the Pink Ghost's target location
+    GetBlackboardComponent()->SetValueAsVector("PinkGhostTarget", PinkGhostTargetLocation);
 }
 
 void APAIController::UpdateInkyTargetLocation()
 {
-    if (!bScatterMode) {
+    if (!bScatterMode)
+    {
         APawn* MyPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 
         float OffsetDistance = 80.0f;
 
-         FVector PlayerLocation = MyPawn->GetActorLocation();
+        FVector PlayerLocation = MyPawn->GetActorLocation();
         // Calculate the target location to the left of the player
         FVector PinkGhostTargetLocation = PlayerLocation - MyPawn->GetActorRightVector() * OffsetDistance;
 
@@ -58,24 +52,24 @@ void APAIController::UpdateInkyTargetLocation()
         // Set Inky's target location in the blackboard
         GetBlackboardComponent()->SetValueAsVector("InkyTarget", InkyTarget);
     }
-    
 }
 
 void APAIController::UpdataRedTargetLocation()
-{ 
-    if (!bScatterMode) {
+{
+    if (!bScatterMode)
+    {
         APawn* MyPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 
-        //GetBlackboardComponent() ->SetValueAsVector("MoveToTarget", MyPawn->GetActorLocation());
+        // GetBlackboardComponent() ->SetValueAsVector("MoveToTarget", MyPawn->GetActorLocation());
 
         GetBlackboardComponent()->SetValueAsObject("TargetActor", MyPawn);
     }
-    
 }
 
-void APAIController::UpdateOrangeGhostTargetLocation() {
-
-    if (!bScatterMode) {
+void APAIController::UpdateOrangeGhostTargetLocation()
+{
+    if (!bScatterMode)
+    {
         APawn* MyPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 
         FVector PlayerLocation = MyPawn->GetActorLocation();
@@ -89,13 +83,13 @@ void APAIController::UpdateOrangeGhostTargetLocation() {
         float ScatterThreshold = 80.0f; // Adjust as needed
 
         // Check if the Orange Ghost is within the scatter threshold
-        if (DistanceToPlayer <= ScatterThreshold) {
+        if (DistanceToPlayer <= ScatterThreshold)
+        {
             // Set the scatter target location
             FVector OrangeScatterTargetLocation = FVector(-2590.0f, -2770.0f, 88.0f);
             GetBlackboardComponent()->SetValueAsVector("OrangeScatterTarget", OrangeScatterTargetLocation);
         }
     }
-
 }
 
 void APAIController::ToggleScatterChaseMode()
@@ -110,11 +104,10 @@ void APAIController::ToggleScatterChaseMode()
     GetWorldTimerManager().SetTimer(ScatterChaseTimerHandle, this, &APAIController::ToggleScatterChaseMode, NextModeDuration, false);
 }
 
-void APAIController::Update() 
+void APAIController::Update()
 {
-
-    if (bScatterMode) {
-
+    if (bScatterMode)
+    {
         FVector RedTargetLocationS = FVector(2620.0, 2810.0, 88);
         GetBlackboardComponent()->SetValueAsVector("RedScatterTarget", RedTargetLocationS);
 
@@ -127,12 +120,11 @@ void APAIController::Update()
         FVector OrangeTargetLocationS = FVector(-2590.0, -2770.0, 88);
         GetBlackboardComponent()->SetValueAsVector("OrangeScatterTarget", OrangeTargetLocationS);
     }
-
-    else {
-
+    else
+    {
         UpdataRedTargetLocation();
         UpdatePinkGhostTargetLocation();
         UpdateInkyTargetLocation();
         UpdateOrangeGhostTargetLocation();
     }
-};
+}
