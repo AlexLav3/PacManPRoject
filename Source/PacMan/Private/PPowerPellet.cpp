@@ -14,7 +14,12 @@ APPowerPellet::APPowerPellet()
     BaseMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
     BaseMesh->SetCollisionResponseToAllChannels(ECR_Block);
     BaseMesh->OnComponentHit.AddDynamic(this, &APPowerPellet::OnPelletHit);
-    PowerPelletTimerHandle;
+}
+
+
+void APPowerPellet::BeginPlay()
+{
+    Super::BeginPlay();
 }
 
 void APPowerPellet::OnPelletHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
@@ -25,18 +30,17 @@ void APPowerPellet::OnPelletHit(UPrimitiveComponent* HitComponent, AActor* Other
         PacMan->bHasConsumedPowerPellet = true;
         StartPowerPelletEffect();
     }
-    Destroy();
+    SetActorHiddenInGame(true);
+    SetActorEnableCollision(false);
 
 }
 void APPowerPellet::EndPowerPelletEffect()
 {
  APPacMan* PacMan = Cast<APPacMan>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
- if (PacMan)
- {
-     PacMan->bHasConsumedPowerPellet = false;
- }
 
+     PacMan->bHasConsumedPowerPellet = false;
 }
+
 void APPowerPellet::StartPowerPelletEffect()
 {
     GetWorldTimerManager().SetTimer(PowerPelletTimerHandle, this, &APPowerPellet::EndPowerPelletEffect, 5.0f, false);

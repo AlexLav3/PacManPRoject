@@ -34,7 +34,7 @@ void APGhost::OnGhostHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, 
         {
             Destroy(); // Destroy the ghost if Pac-Man has consumed a power pellet
         }
-        else
+        else 
         {
            
             UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, true);

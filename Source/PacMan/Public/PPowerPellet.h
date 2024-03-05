@@ -8,6 +8,7 @@
 #include "PPowerPellet.generated.h"
 
 class UStaticMeshComponent; 
+struct FTimerHandle; 
 
 UCLASS()
 class PACMAN_API APPowerPellet : public AActor
@@ -22,10 +23,17 @@ public:
 	UStaticMeshComponent* BaseMesh;
 public:	
 
+	void BeginPlay();
+
 	UFUNCTION()
 	void OnPelletHit(class UPrimitiveComponent* HitComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+
+	UFUNCTION()
 	void EndPowerPelletEffect();
+
+	UFUNCTION()
 	void StartPowerPelletEffect();
 
+	UPROPERTY()
 	FTimerHandle PowerPelletTimerHandle;
 };
