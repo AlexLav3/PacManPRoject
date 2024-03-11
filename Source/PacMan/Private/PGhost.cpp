@@ -1,14 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "PGhost.h"
+#include <Kismet/GameplayStatics.h>
 
 // Sets default values
 APGhost::APGhost()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -42,3 +41,4 @@ void APGhost::OnGhostHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, 
     }
 
 }
+
