@@ -33,7 +33,7 @@ protected:
 
 	void UpdatePinkGhostTargetLocation();
 
-	void UpdateBlueTargetLocation();
+	void UpdateBlueTargetLocation(const FVector& PinkGhostTargetLocation);
 
 	void UpdataRedTargetLocation();
 

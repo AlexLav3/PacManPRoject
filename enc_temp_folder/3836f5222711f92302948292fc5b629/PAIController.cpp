@@ -8,25 +8,25 @@
 void APAIController::BeginPlay()
 {
     Super::BeginPlay();
-    
-
-    RunBehaviorTree(BehaviourTree);
-    bScatterMode = true;
-    GetBlackboardComponent()->SetValueAsBool("bScatterMode", bScatterMode);
-
-    ToggleScatterChaseMode(); 
-}
-
-void APAIController::Tick(float DeltaSeconds)
-{
-    Super::Tick(DeltaSeconds);
     MyPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 
     // Check if MyPawn is valid before accessing its properties
     if (MyPawn) {
         PlayerLocation = MyPawn->GetActorLocation();
     }
-    Update();
+
+    RunBehaviorTree(BehaviourTree);
+    bScatterMode = true;
+    GetBlackboardComponent()->SetValueAsBool("bScatterMode", bScatterMode);
+
+    ToggleScatterChaseMode(); 
+    
+}
+
+void APAIController::Tick(float DeltaSeconds)
+{
+    Super::Tick(DeltaSeconds);
+
 }
 
 void APAIController::UpdatePinkGhostTargetLocation()
@@ -40,10 +40,9 @@ void APAIController::UpdatePinkGhostTargetLocation()
     GetBlackboardComponent()->SetValueAsVector("PinkGhostTarget", PinkGhostTargetLocation);
 }
 
-void APAIController::UpdateBlueTargetLocation()
+void APAIController::UpdateBlueTargetLocation(const FVector& PinkGhostTargetLocation)
 {
-      FVector PinkGhostTargetLocation = GetBlackboardComponent()->GetValueAsVector("PinkGhostTarget");
-       FVector BlueTarget = PlayerLocation + (PinkGhostTargetLocation - PlayerLocation);
+         FVector BlueTarget = PlayerLocation + (PinkGhostTargetLocation - PlayerLocation);
 
         // Set Inky's target location in the blackboard
         GetBlackboardComponent()->SetValueAsVector("BlueTarget", BlueTarget);
@@ -80,16 +79,17 @@ void APAIController::UpdateOrangeGhostTargetLocation()
 void APAIController::Update()
 {
     if (!bScatterMode)
-    { 
-        UE_LOG(LogTemp, Warning, TEXT("NOT Scattermode "));
+    {
         UpdataRedTargetLocation();
         UpdatePinkGhostTargetLocation();
-        UpdateBlueTargetLocation();
+
+        FVector PinkGhostTargetLocation= GetBlackboardComponent()->GetValueAsVector("PinkGhostTarget");
+        UpdateBlueTargetLocation(PinkGhostTargetLocation);
+
         UpdateOrangeGhostTargetLocation(); 
     }
     else
     {
-        UE_LOG(LogTemp, Warning, TEXT("YES Scattermode "));
        GetBlackboardComponent()->SetValueAsVector("RedScatterTarget", FVector(2620.0, 2810.0, 88));
 
         GetBlackboardComponent()->SetValueAsVector("PinkScatterTarget",FVector(2620.0, -2810.0, 88));
@@ -103,21 +103,15 @@ void APAIController::Update()
 
  void APAIController::ResetScatterMode()
 {
-     UE_LOG(LogTemp, Warning, TEXT("ResetScatterMode called"));
-
-     if (!bScatterMode) {
-         bScatterMode = true;
-         GetBlackboardComponent()->SetValueAsBool("bScatterMode", bScatterMode);
-     }
-     else {
-         bScatterMode = false;
-         GetBlackboardComponent()->SetValueAsBool("bScatterMode", bScatterMode);
-     }
+     bScatterMode = true;
+     GetBlackboardComponent()->SetValueAsBool("bScatterMode",bScatterMode);
+     Update();
 } 
 
 void APAIController::ToggleScatterChaseMode()
 {
+    bScatterMode = false;
+    GetBlackboardComponent()->SetValueAsBool("bScatterMode", bScatterMode);
     // Reset the timer for the next mode
     GetWorldTimerManager().SetTimer(ScatterChaseTimerHandle, this, &APAIController::ResetScatterMode, 10.0f, true);
-
 }
