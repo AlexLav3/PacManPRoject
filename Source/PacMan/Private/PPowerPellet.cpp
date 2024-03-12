@@ -28,8 +28,11 @@ void APPowerPellet::OnPelletHit(UPrimitiveComponent* HitComponent, AActor* Other
     if (PacMan)
     {
         PacMan->bHasConsumedPowerPellet = true;
-        StartPowerPelletEffect();
+        StartPowerPelletEffect();    
+        PacMan->HighScore += 50;
+
     }
+
     SetActorHiddenInGame(true);
     SetActorEnableCollision(false);
 

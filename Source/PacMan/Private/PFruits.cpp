@@ -41,7 +41,7 @@ void APFruits::OnFruitHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 		if (PacMan)
 		{
 			// Increment the high score of the player character
-			PacMan->HighScore++;
+			PacMan->HighScore += 10;
 
 			// Set the fruit as eaten and destroy it
 			bHasBeenEaten = true;

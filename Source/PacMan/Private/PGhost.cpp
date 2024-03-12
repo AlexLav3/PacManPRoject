@@ -8,13 +8,18 @@ APGhost::APGhost()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+    // Create a collision component and set it as the root component
+    Collision = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
+    Collision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    Collision->OnComponentHit.AddDynamic(this, &APGhost::OnGhostHit);
+    
 }
 
 // Called when the game starts or when spawned
 void APGhost::BeginPlay()
 {
 	Super::BeginPlay();
-	
+   
 }
 
 // Called every frame
@@ -32,10 +37,10 @@ void APGhost::OnGhostHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, 
         if (PacMan->bHasConsumedPowerPellet)
         {
             Destroy(); // Destroy the ghost if Pac-Man has consumed a power pellet
+            PacMan->HighScore += 100; 
         }
         else 
         {
-           
             UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, true);
         }
     }
