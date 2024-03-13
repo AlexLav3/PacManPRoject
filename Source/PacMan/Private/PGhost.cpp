@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "PGhost.h"
+#include "PAIController.h"
 #include <Kismet/GameplayStatics.h>
 
 // Sets default values
@@ -8,11 +9,10 @@ APGhost::APGhost()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-    // Create a collision component and set it as the root component
-    Collision = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
-    Collision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-    Collision->OnComponentHit.AddDynamic(this, &APGhost::OnGhostHit);
     
+    GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Block);
+    GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &APGhost::OnGhostHit);
 }
 
 // Called when the game starts or when spawned

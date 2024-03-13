@@ -8,7 +8,9 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include <Kismet/GameplayStatics.h>
 #include "Components/SphereComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "PGhost.generated.h"
+
 
 UCLASS()
 class PACMAN_API APGhost : public ACharacter
@@ -18,9 +20,6 @@ class PACMAN_API APGhost : public ACharacter
 public:
 	// Sets default values for this character's properties
 	APGhost();
-
-	UPROPERTY(VisibleAnywhere)
-	USphereComponent* Collision;
 
 protected:
 	// Called when the game starts or when spawned
