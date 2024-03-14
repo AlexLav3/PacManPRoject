@@ -38,6 +38,7 @@ APPacMan::APPacMan()
 
 	HighScore = 0;
 	bHasConsumedPowerPellet = false; 
+	Won = false; 
 
 }
 

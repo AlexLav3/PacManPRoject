@@ -15,6 +15,7 @@ APFruits::APFruits()
 	BaseMesh->SetCollisionResponseToAllChannels(ECR_Block);
 	BaseMesh->OnComponentHit.AddDynamic(this, &APFruits::OnFruitHit);
 
+    FruitsEaten = 0;
 }
 
 // Called when the game starts or when spawned
@@ -42,10 +43,15 @@ void APFruits::OnFruitHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
         {
             // Increment the high score of the player character
             PacMan->HighScore += 10;
-            PacMan->FruitsEaten++;
 
-            if (PacMan->FruitsEaten == 50) {
-               
+            // Set the fruit as eaten and destroy it
+            bHasBeenEaten = true;
+
+            FruitsEaten++;
+            UE_LOG(LogTemp, Warning, TEXT("ATE FRUIT "));
+
+            if (FruitsEaten == 3) {
+                UE_LOG(LogTemp, Warning, TEXT("WON "));
                 PacMan->Won = true;
             }
 

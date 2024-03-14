@@ -32,4 +32,7 @@ public:
 	UFUNCTION()
 	void OnGhostHit(class UPrimitiveComponent* HitComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 
+	UFUNCTION()
+	void TeleportToLocation();
+
 };

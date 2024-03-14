@@ -24,6 +24,9 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* BaseMesh;
 
+	bool bHasBeenEaten=false;
+	
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -33,5 +36,6 @@ public:
 	UFUNCTION()
 	void OnFruitHit(class UPrimitiveComponent* HitComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 
-
+	UPROPERTY()
+    int FruitsEaten; 
 };

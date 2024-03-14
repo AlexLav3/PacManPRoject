@@ -36,7 +36,7 @@ void APGhost::OnGhostHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, 
     {
         if (PacMan->bHasConsumedPowerPellet)
         {
-            Destroy(); // Destroy the ghost if Pac-Man has consumed a power pellet
+            TeleportToLocation(); // Destroy the ghost if Pac-Man has consumed a power pellet
             PacMan->HighScore += 100; 
         }
         else 
@@ -47,3 +47,9 @@ void APGhost::OnGhostHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, 
 
 }
 
+void APGhost::TeleportToLocation()
+{
+    FVector TeleportLocation = FVector(-10.0f, 210.0f, 88.0f);
+    SetActorLocation(TeleportLocation);
+
+}
