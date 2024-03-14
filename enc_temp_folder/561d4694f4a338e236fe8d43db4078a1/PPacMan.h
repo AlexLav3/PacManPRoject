@@ -74,7 +74,4 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Win")
 	bool Won;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Fruits")
-	int FruitsEaten;
 };
