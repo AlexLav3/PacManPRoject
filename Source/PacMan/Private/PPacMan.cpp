@@ -11,35 +11,26 @@
 #include "EnhancedInputComponent.h"
 #include "PFruits.h"
 #include "EnhancedInputSubsystems.h"
+#include <Kismet/GameplayStatics.h>
 
 // Sets default values
 APPacMan::APPacMan()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-
+	// Set this character to call Tick() every frame
 	PrimaryActorTick.bCanEverTick = true;
 
+	// Set up character movement
 	GetCharacterMovement()->MaxWalkSpeed = 500.f;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
-
-	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = true;
-	bUseControllerRotationRoll = true;
-
-	SpringArmComp = CreateDefaultSubobject <USpringArmComponent>("SpringArmComp");
-	SpringArmComp->bUsePawnControlRotation = false;
-	SpringArmComp->SetupAttachment(RootComponent);
-
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f);
 
-	CameraComp = CreateDefaultSubobject <UCameraComponent>("CameraComp");
-	CameraComp->SetupAttachment(SpringArmComp);
-
+	// Create camera component
+	CameraComp = CreateDefaultSubobject<UCameraComponent>("CameraComp");
+	
 	HighScore = 0;
-	bHasConsumedPowerPellet = false; 
-	Won = false; 
-
+	bHasConsumedPowerPellet = false;
+	Won = false;
 }
 
 // Called when the game starts or when spawned
@@ -47,10 +38,18 @@ void APPacMan::BeginPlay()
 {
 	Super::BeginPlay();
 
+	CameraComp->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+    CameraComp->SetWorldLocation(FVector(30.0f, 0.0f, 6000.0f));
+	CameraComp->SetWorldRotation(FRotator(-90.0f, 0.0f, 0.0f)); // Set the rotation to look straight down
+
 	//Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		if (IsValid(PlayerController) && IsValid(CameraComp))
+		{
+			PlayerController->SetViewTargetWithBlend(this, 0.0f);
+		}
+	  	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
@@ -81,22 +80,18 @@ void APPacMan::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void APPacMan::Move(const FInputActionValue& Value)
 {
-	//  Vector2D
+
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
 	{
-		// find out which way is forward
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
+		// Forward vector in world space
+		const FVector ForwardDirection = GetActorForwardVector();
 
-		// get forward vector
-		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+		// Right vector in world space 
+		const FVector RightDirection = GetActorRightVector();
 
-		// get right vector 
-		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-
-		// add movement 
+		// Add movement in the direction of the input
 		AddMovementInput(ForwardDirection, MovementVector.Y);
 		AddMovementInput(RightDirection, MovementVector.X);
 	}

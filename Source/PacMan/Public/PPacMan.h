@@ -14,6 +14,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
+class AStaticCameraActor; 
 
 struct FInputActionValue; 
 

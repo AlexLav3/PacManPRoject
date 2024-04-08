@@ -118,6 +118,6 @@ void APAIController::Update()
 void APAIController::ToggleScatterChaseMode()
 {
     // Reset the timer for the next mode
-    GetWorldTimerManager().SetTimer(ScatterChaseTimerHandle, this, &APAIController::ResetScatterMode, 10.0f, true);
+    GetWorldTimerManager().SetTimer(ScatterChaseTimerHandle, this, &APAIController::ResetScatterMode, 15.0f, true);
 
 }
