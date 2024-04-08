@@ -80,22 +80,18 @@ void APPacMan::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void APPacMan::Move(const FInputActionValue& Value)
 {
-	//  Vector2D
+
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
 	{
-		// find out which way is forward
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
+		// Forward vector in world space
+		const FVector ForwardDirection = GetActorForwardVector();
 
-		// get forward vector
-		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+		// Right vector in world space 
+		const FVector RightDirection = GetActorRightVector();
 
-		// get right vector 
-		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-
-		// add movement 
+		// Add movement in the direction of the input
 		AddMovementInput(ForwardDirection, MovementVector.Y);
 		AddMovementInput(RightDirection, MovementVector.X);
 	}
